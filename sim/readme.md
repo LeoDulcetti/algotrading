@@ -1,4 +1,4 @@
 # Simulation Group Work - Process Diagram & Notes
 
-! [Process](Process_diagram.png)
+![Process](Process_diagram.png)
 
