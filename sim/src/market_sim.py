@@ -4,6 +4,7 @@
     # 1. Implement a Parent Class that creates a "for loop" to run multiple simulations and keeps track of the results.
     # 2. Use dynamic price and volume sampling based on the historical data.
     # 3. Enhanced the poisson simulation on either: autoregressive or XGBoost Model
+    # Round up the Volume? 
 L&C
 '''
 
