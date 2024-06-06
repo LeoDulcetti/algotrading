@@ -1,10 +1,10 @@
 '''
 # Next Steps:
 
-    # 1. Implement a Parent Class that creates a "for loop" to run multiple simulations and keeps track of the results.
+    # 1. Implement a Parent Class that creates a "for loop" to run multiple simulations and keeps track of the results. --> Done in market_sim2.py
     # 2. Use dynamic price and volume sampling based on the historical data.
     # 3. Enhanced the poisson simulation on either: autoregressive or XGBoost Model
-    # Round up the Volume? 
+    # Round up the Volume? --> Done
 L&C
 '''
 
@@ -255,6 +255,7 @@ class MarketSim:
         data_clean = df[df_vol_col].dropna()
         c, loc, scale = gamma.fit(data_clean)
         sample_gamma_volume = gamma.rvs(c, loc, scale, size=num_samples)
+        sample_gamma_volume = np.round(sample_gamma_volume, 0)
         return sample_gamma_volume
 
     def simulate_volumes(self):
@@ -293,7 +294,7 @@ class MarketSim:
                         # Buy Limit
                         return_price = random.choice(sim_returns_buy_wei)
                         price = start_price * (1 + return_price)
-                        volume = random.choice(sim_vol_buy_lim_gam)
+                        volume = random.choice(sim_vol_buy_lim_gam).round(0)
                         results.append(
                             {'Time': index, 'OrderType': 1, 'Price': price, 'Volume': volume})
 
@@ -301,7 +302,7 @@ class MarketSim:
                         # Sell Limit
                         return_price = random.choice(sim_returns_sell_wei)
                         price = start_price * (1 + return_price)
-                        volume = random.choice(sim_vol_sell_lim_gam)
+                        volume = random.choice(sim_vol_sell_lim_gam).round(0)
                         results.append(
                             {'Time': index, 'OrderType': 2, 'Price': price, 'Volume': volume})
 
@@ -309,7 +310,7 @@ class MarketSim:
                         # Buy Market
                         return_price = random.choice(sim_returns_buy_wei)
                         price = start_price * (1 + return_price)
-                        volume = random.choice(sim_vol_buy_mrkt_gam)
+                        volume = random.choice(sim_vol_buy_mrkt_gam).round(0)
                         results.append(
                             {'Time': index, 'OrderType': 7, 'Price': price, 'Volume': volume})
 
@@ -317,7 +318,7 @@ class MarketSim:
                         # Sell Market
                         return_price = random.choice(sim_returns_sell_wei)
                         price = start_price * (1 + return_price)
-                        volume = random.choice(sim_vol_sell_mrkt_gam)
+                        volume = random.choice(sim_vol_sell_mrkt_gam).round(0)
                         results.append(
                             {'Time': index, 'OrderType': 8, 'Price': price, 'Volume': volume})
 
@@ -360,24 +361,23 @@ class MarketSim:
         return probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam, sim_data
 
 
-if __name__ == "__main__":
-    # Instantiate and run the simulation
-    market_sim_instance = MarketSim()
-    probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam = market_sim_instance.run_market_simulation()
+# Instantiate and run the simulation
+market_sim_instance = MarketSim()
+probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam, sim_data = market_sim_instance.run_market_simulation()
 
-    # Display the head of the probabilities DataFrame
-    print("\nProbabilities DataFrame Head:")
-    print(probabilities.head())
-    print("\nSimulated Sell Returns (Weibull):")
-    print(sim_returns_sell_wei[:5])
-    print("\nSimulated Buy Returns (Weibull):")
-    print(sim_returns_buy_wei[:5])
-    print("\nSimulated Buy Limit Volumes (Gamma):")
-    print(sim_vol_buy_lim_gam[:5])
-    print("\nSimulated Sell Limit Volumes (Gamma):")
-    print(sim_vol_sell_lim_gam[:5])
-    print("\nSimulated Buy Market Volumes (Gamma):")
-    print(sim_vol_buy_mrkt_gam[:5])
-    print("\nSimulated Sell Market Volumes (Gamma):")
-    print(sim_vol_sell_mrkt_gam[:5])
-    print("\nSimulation Completed Successfully!")
+# Display the head of the probabilities DataFrame
+print("\nProbabilities DataFrame Head:")
+print(probabilities.head())
+print("\nSimulated Sell Returns (Weibull):")
+print(sim_returns_sell_wei[:5])
+print("\nSimulated Buy Returns (Weibull):")
+print(sim_returns_buy_wei[:5])
+print("\nSimulated Buy Limit Volumes (Gamma):")
+print(sim_vol_buy_lim_gam[:5])
+print("\nSimulated Sell Limit Volumes (Gamma):")
+print(sim_vol_sell_lim_gam[:5])
+print("\nSimulated Buy Market Volumes (Gamma):")
+print(sim_vol_buy_mrkt_gam[:5])
+print("\nSimulated Sell Market Volumes (Gamma):")
+print(sim_vol_sell_mrkt_gam[:5])
+print("\nSimulation Completed Successfully!")
