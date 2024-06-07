@@ -398,10 +398,11 @@ class SimulationRunner:
             time.sleep(1)  # Delay before the next simulation
 
 
-# Instantiate and run the simulation runner
-output_folder = "/Users/lucazosso/Desktop/IE_Course/Term_3/Algorithmic_Trading/ie_mbd_sept23/sim/data/logs"
-# Change to your desired path
-output_file = output_folder + '/simulation_results.csv'
-num_simulations = 10  # Specify the number of simulations to run
-simulation_runner = SimulationRunner(output_file, num_simulations)
-simulation_runner.run_simulations()
+if __name__ == '__main__':
+    # Instantiate and run the simulation runner
+    output_folder = "/Users/lucazosso/Desktop/IE_Course/Term_3/Algorithmic_Trading/ie_mbd_sept23/sim/data/logs"
+    # Change to your desired path
+    output_file = output_folder + '/simulation_results.csv'
+    num_simulations = 2  # Specify the number of simulations to run
+    simulation_runner = SimulationRunner(output_file, num_simulations)
+    simulation_runner.run_simulations()

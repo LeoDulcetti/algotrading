@@ -361,23 +361,24 @@ class MarketSim:
         return probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam, sim_data
 
 
-# Instantiate and run the simulation
-market_sim_instance = MarketSim()
-probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam, sim_data = market_sim_instance.run_market_simulation()
+if __name__ == '__main__':
+    # Instantiate and run the simulation
+    market_sim_instance = MarketSim()
+    probabilities, sim_returns_sell_wei, sim_returns_buy_wei, sim_vol_buy_lim_gam, sim_vol_sell_lim_gam, sim_vol_buy_mrkt_gam, sim_vol_sell_mrkt_gam, sim_data = market_sim_instance.run_market_simulation()
 
-# Display the head of the probabilities DataFrame
-print("\nProbabilities DataFrame Head:")
-print(probabilities.head())
-print("\nSimulated Sell Returns (Weibull):")
-print(sim_returns_sell_wei[:5])
-print("\nSimulated Buy Returns (Weibull):")
-print(sim_returns_buy_wei[:5])
-print("\nSimulated Buy Limit Volumes (Gamma):")
-print(sim_vol_buy_lim_gam[:5])
-print("\nSimulated Sell Limit Volumes (Gamma):")
-print(sim_vol_sell_lim_gam[:5])
-print("\nSimulated Buy Market Volumes (Gamma):")
-print(sim_vol_buy_mrkt_gam[:5])
-print("\nSimulated Sell Market Volumes (Gamma):")
-print(sim_vol_sell_mrkt_gam[:5])
-print("\nSimulation Completed Successfully!")
+    # Display the head of the probabilities DataFrame
+    print("\nProbabilities DataFrame Head:")
+    print(probabilities.head())
+    print("\nSimulated Sell Returns (Weibull):")
+    print(sim_returns_sell_wei[:5])
+    print("\nSimulated Buy Returns (Weibull):")
+    print(sim_returns_buy_wei[:5])
+    print("\nSimulated Buy Limit Volumes (Gamma):")
+    print(sim_vol_buy_lim_gam[:5])
+    print("\nSimulated Sell Limit Volumes (Gamma):")
+    print(sim_vol_sell_lim_gam[:5])
+    print("\nSimulated Buy Market Volumes (Gamma):")
+    print(sim_vol_buy_mrkt_gam[:5])
+    print("\nSimulated Sell Market Volumes (Gamma):")
+    print(sim_vol_sell_mrkt_gam[:5])
+    print("\nSimulation Completed Successfully!")
