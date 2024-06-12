@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from scipy.stats import weibull_min, gamma, norm
+from scipy.stats import weibull_min, gamma
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 import joblib
 import random
@@ -141,17 +141,28 @@ class MarketSim:
         self.price_buy_df = price_buy_df
         return price_sell_df, price_buy_df
 
-    def sampling_return_norm(self, df, df_price_col, num_samples=390):
-        # seed = 42
-        # np.random.seed(seed)
-        # Compute w/mle
-        mean_returns_mle, std_returns_mle = norm.fit(df[df_price_col].dropna())
+    def sampling_return_price_weibull(self, df, df_price_col, num_samples=390):
+        '''
+        Sample return prices using a Weibull distribution.
+        '''
+        seed = 42
+        np.random.seed(seed)
+        data_clean = df[df_price_col].dropna()
 
-        # Generate sample directly from the gaussian distribution
-        sample_gaussian_returns = np.random.normal(
-            loc=mean_returns_mle, scale=std_returns_mle, size=num_samples)
+        # Handle the case where data_clean is empty
+        if data_clean.empty:
+            print(f"Data clean is empty for {df_price_col}")
+            return np.array([])  # Return an empty array to handle later
 
-        return sample_gaussian_returns
+        try:
+            c, loc, scale = weibull_min.fit(data_clean, floc=0)
+            sample_weibull_returns = weibull_min.rvs(
+                c, loc, scale, size=num_samples)
+        except (ValueError, RuntimeError) as e:
+            print(f"Error fitting Weibull distribution: {e}")
+            return np.array([])  # Return an empty array to handle later
+
+        return sample_weibull_returns
 
     def simulate_prices(self):
         '''
@@ -162,10 +173,10 @@ class MarketSim:
         print(f"Price sell df head:\n{price_sell_df.head()}")
         print(f"Price buy df head:\n{price_buy_df.head()}")
 
-        sim_returns_sell_wei = self.sampling_return_norm(
-            price_sell_df, 'returns', num_samples=len(price_sell_df))  # len(price_sell_df)
-        sim_returns_buy_wei = self.sampling_return_norm(
-            price_buy_df, 'returns', num_samples=len(price_buy_df))  # len(price_buy_df)
+        sim_returns_sell_wei = self.sampling_return_price_weibull(
+            price_sell_df, 'returns', num_samples=len(price_sell_df))
+        sim_returns_buy_wei = self.sampling_return_price_weibull(
+            price_buy_df, 'returns', num_samples=len(price_buy_df))
 
         # If the arrays are empty, fill with zeros
         if sim_returns_sell_wei.size == 0:
@@ -297,7 +308,6 @@ class MarketSim:
                         volume = random.choice(sim_vol_buy_lim_gam)
                         results.append(
                             {'Time': index, 'OrderType': 1, 'Price': price, 'Volume': volume})
-                        start_price = price
 
                     elif order_type == 2:
                         # Sell Limit
@@ -306,7 +316,6 @@ class MarketSim:
                         volume = random.choice(sim_vol_sell_lim_gam)
                         results.append(
                             {'Time': index, 'OrderType': 2, 'Price': price, 'Volume': volume})
-                        start_price = price
 
                     elif order_type == 7:
                         # Buy Market
@@ -315,7 +324,6 @@ class MarketSim:
                         volume = random.choice(sim_vol_buy_mrkt_gam)
                         results.append(
                             {'Time': index, 'OrderType': 7, 'Price': price, 'Volume': volume})
-                        start_price = price
 
                     elif order_type == 8:
                         # Sell Market
@@ -402,11 +410,9 @@ class SimulationRunner:
 
             # Convert sim_data to DataFrame
             sim_data_df = pd.DataFrame(sim_data)
-            header = ['Time', 'OrderType', 'Price', 'Volume']
-            sim_data_df = sim_data_df[header]
 
             # Append to CSV file
-            if os.path.getsize(self.output_file) == 0:
+            if not os.path.isfile(self.output_file):
                 sim_data_df.to_csv(self.output_file, index=False)
             else:
                 sim_data_df.to_csv(self.output_file, mode='a',
@@ -426,6 +432,6 @@ if __name__ == '__main__':
     output_folder = "/Users/lucazosso/Desktop/IE_Course/Term_3/Algorithmic_Trading/ie_mbd_sept23/sim/data/logs"
     # Change to your desired path
     output_file = output_folder + '/simulation_results.csv'
-    num_simulations = 2  # Specify the number of simulations to run
+    num_simulations = 1  # Specify the number of simulations to run
     simulation_runner = SimulationRunner(output_file, num_simulations)
     simulation_runner.run_simulations()
