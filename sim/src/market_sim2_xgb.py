@@ -388,11 +388,21 @@ class SimulationRunner:
         # Ensure the output directory exists
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+        # Clear the log file everytime the class is run
+        self.clear_output_file()
+
+    def clear_output_file(self):
+        '''
+        Clear the content of the output file.
+        '''
+        with open(self.output_file, 'w') as file:
+            pass
+
     def run_simulations(self, start_price=585.0):
         '''
         Run the specified number of market simulations and store the results in a CSV file.
         '''
-        # start_price = 585.0  # Initial starting price
+        # start_price = 200.0  # Initial starting price
 
         for i in range(self.num_simulations):
             print(f"Running simulation {i+1}/{self.num_simulations}")
@@ -426,6 +436,6 @@ if __name__ == '__main__':
     output_folder = "/Users/lucazosso/Desktop/IE_Course/Term_3/Algorithmic_Trading/ie_mbd_sept23/sim/data/logs"
     # Change to your desired path
     output_file = output_folder + '/simulation_results.csv'
-    num_simulations = 2  # Specify the number of simulations to run
+    num_simulations = 3  # Specify the number of simulations to run
     simulation_runner = SimulationRunner(output_file, num_simulations)
     simulation_runner.run_simulations()
