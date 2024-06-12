@@ -167,12 +167,6 @@ class MarketSim:
         sim_returns_buy_wei = self.sampling_return_norm(
             price_buy_df, 'returns', num_samples=len(price_buy_df))  # len(price_buy_df)
 
-        # If the arrays are empty, fill with zeros
-        if sim_returns_sell_wei.size == 0:
-            sim_returns_sell_wei = np.zeros(len(price_sell_df))
-        if sim_returns_buy_wei.size == 0:
-            sim_returns_buy_wei = np.zeros(len(price_buy_df))
-
         return sim_returns_sell_wei, sim_returns_buy_wei
 
     ############################## Volume Simulation ##############################
@@ -436,6 +430,6 @@ if __name__ == '__main__':
     output_folder = "/Users/lucazosso/Desktop/IE_Course/Term_3/Algorithmic_Trading/ie_mbd_sept23/sim/data/logs"
     # Change to your desired path
     output_file = output_folder + '/simulation_results.csv'
-    num_simulations = 3  # Specify the number of simulations to run
+    num_simulations = 5  # Specify the number of simulations to run
     simulation_runner = SimulationRunner(output_file, num_simulations)
     simulation_runner.run_simulations()
