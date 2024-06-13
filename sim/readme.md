@@ -211,5 +211,4 @@ This Algorithm iterates through the probability of orders occuring simulated by 
 ## Improvements
 
 - already implement a default file log
-- cleaning the file log automatically
 - when run, the output should be a pandas dataframe
