@@ -333,30 +333,52 @@ class MarketSim:
 
                     ############################## Partial and Full Cancelation ##############################
                     elif order_type == 3:
-                        # Partial cancellation of a sell order
-                        # Assume 50% of the order is canceled
-                        volume = random.choice(sim_vol_sell_lim_gam) * 0.5
-                        results.append(
-                            {'Time': index, 'OrderType': 3, 'Price': start_price, 'Volume': volume})
+                        if not results:  # Check if the list is empty
+                            pass
+                        else:
+                            # Partial cancellation of a sell order
+                            last_order = results[-1]
+                            last_order_price = last_order['Price']
+                            last_order_volume = last_order['Volume']
+                            volume = last_order_volume * random.uniform(0.1, 0.9)
+                            results.append(
+                                {'Time': index, 'OrderType': 3, 'Price': last_order_price, 'Volume': volume})
 
                     elif order_type == 4:
-                        # Partial cancellation of a buy order
-                        # Assume 50% of the order is canceled
-                        volume = random.choice(sim_vol_buy_lim_gam) * 0.5
-                        results.append(
-                            {'Time': index, 'OrderType': 4, 'Price': start_price, 'Volume': volume})
+                        if not results:
+                            pass
+                        else:
+                            # Partial cancellation of a sell order
+                            last_order = results[-1]
+                            last_order_price = last_order['Price']
+                            last_order_volume = last_order['Volume']
+                            volume = last_order_volume * random.uniform(0.1, 0.9)
+                            results.append(
+                                {'Time': index, 'OrderType': 4, 'Price': last_order_price, 'Volume': volume})
 
                     elif order_type == 5:
-                        # Full cancellation of a sell order
-                        volume = 0  # Full cancellation implies volume is reduced to 0
-                        results.append(
-                            {'Time': index, 'OrderType': 5, 'Price': start_price, 'Volume': volume})
+                        if not results:
+                            pass
+                        else:
+                            # Full cancellation of a sell order
+                            last_order = results[-1]
+                            last_order_price = last_order['Price']
+                            last_order_volume = last_order['Volume']
+                            volume = last_order_volume * 0
+                            results.append(
+                                {'Time': index, 'OrderType': 5, 'Price': last_order_price, 'Volume': volume})
 
                     elif order_type == 6:
-                        # Full cancellation of a buy order
-                        volume = 0  # Full cancellation implies volume is reduced to 0
-                        results.append(
-                            {'Time': index, 'OrderType': 6, 'Price': start_price, 'Volume': volume})
+                        if not results:
+                            pass
+                        else:
+                            # Full cancellation of a sell order
+                            last_order = results[-1]
+                            last_order_price = last_order['Price']
+                            last_order_volume = last_order['Volume']
+                            volume = last_order_volume * 0
+                            results.append(
+                                {'Time': index, 'OrderType': 6, 'Price': last_order_price, 'Volume': volume})
 
         return results
 
@@ -487,8 +509,8 @@ class SimulationRunner:
             Mapping the OrderType for Reference:\n
             OrderType    |Type                   |Direction
             ------------------------------------------------------
-            1            |Limit                  |Sell
-            2            |Limit                  |Buy
+            1            |Limit                  |Sell (-1)
+            2            |Limit                  |Buy   (1)
             3            |Partial Cancelation    |Sell
             4            |Partial Cancelation    |Buy
             5            |Full Cancelation       |Sell
