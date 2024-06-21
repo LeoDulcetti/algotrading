@@ -94,7 +94,8 @@ class MarketSim:
         # Import xgb model from pickle file
         current_dir = os.path.dirname(__file__)
         model_path = os.path.join(current_dir, 'xgboost_model.pkl')
-        model = joblib.load(model_path)  # "sim/src/xgboost_model.pkl"
+        # "sim/src/xgboost_model.pkl" --> XGBOOST
+        model = joblib.load(model_path)
 
         # Preprocess the DataFrame to match the model training process
         le = LabelEncoder()

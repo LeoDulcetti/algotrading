@@ -122,6 +122,7 @@ We sample the volume for each of the different event_types:
 * Sell Limit Order
 * Buy Market Order
 * Sell Market Order
+
 Market_sim2_xgb.py Structure
 
 The market_sim2_xgb.py structure is composed by two classes:
