@@ -23,8 +23,11 @@ class MarketSim:
         - message_data_path: str, path to the message data CSV
         - orderbook_data_path: str, path to the order book data CSV
         '''
-        self.message_data_path = "../data/message_data.csv"
-        self.orderbook_data_path = "../data/orderbook_data.csv"
+        cur_dir = os.path.dirname(__file__)
+        self.message_data_path = os.path.join(
+            cur_dir, "..", "data", "message_data.csv")
+        self.orderbook_data_path = os.path.join(
+            cur_dir, "..", "data", "orderbook_data.csv")
         self.message_data = pd.read_csv(self.message_data_path, header=None)
         self.lob_data = pd.read_csv(self.orderbook_data_path, header=None)
         self.process_data()
